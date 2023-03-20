@@ -1,0 +1,144 @@
+CREATE DATABASE mateus;
+USE mateus;
+
+
+
+-- criando tabela vendedor:
+
+CREATE TABLE vendedor (
+
+codigo INT AUTO_INCREMENT NOT NULL,
+
+  nome VARCHAR(100) NOT NULL,
+
+  salario DECIMAL(8,2),
+
+  telefone INT,
+
+  sexo CHAR(1),
+
+  PRIMARY KEY (codigo),
+
+  CHECK (sexo in('m', 'f'))
+
+);
+
+
+
+-- criando tabela fabricante:
+
+CREATE TABLE fabricante (
+
+codigo INT NOT NULL,
+
+  nome VARCHAR(100) NOT NULL,
+
+  PRIMARY KEY(codigo)
+
+);
+
+
+
+-- criando tabela produto:
+
+CREATE TABLE produto (
+
+codigo INT AUTO_INCREMENT NOT NULL,
+
+  nome VARCHAR(100) NOT NULL,
+
+  preco DECIMAL(8,2),
+
+  cod_fabricante INT,
+
+  PRIMARY KEY(codigo),
+
+  FOREIGN KEY(cod_fabricante) REFERENCES fabricante(codigo)
+
+);
+
+
+
+-- criando tabela cliente:
+
+CREATE TABLE cliente (
+
+id INT AUTO_INCREMENT NOT NULL,
+
+  nome VARCHAR(100) NOT NULL,
+
+  nome_rua VARCHAR(60) NULL,
+
+  bairro VARCHAR(40) NULL,
+
+  cep INT NOT NULL,
+
+  cpf VARCHAR(15),
+
+  uf CHAR(2),
+
+  telefone INT NOT NULL,
+
+  desconto DECIMAL(3,1) NULL,
+
+  sexo CHAR(1),
+
+  PRIMARY KEY (id),
+
+  UNIQUE(cpf),
+
+  CHECK(uf in('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO')),
+
+  CHECK(sexo in('m','f'))
+
+);
+
+
+
+-- criando tabela pedido:
+
+CREATE TABLE pedido (
+
+id INT AUTO_INCREMENT NOT NULL,
+
+  tipo_pagamento VARCHAR(100) NOT NULL,
+
+  id_cliente INT,
+
+  data_entrada DATE NOT NULL,
+
+  data_embarque DATE NOT NULL,
+
+  desconto DECIMAL(3,1) NULL,
+
+  valor_total DECIMAL (8,2) NOT NULL,
+
+  telefone INT NOT NULL,
+
+  forma_pagamento VARCHAR(40) NULL,
+
+  PRIMARY KEY(id),
+
+  FOREIGN KEY(id_cliente) REFERENCES cliente(id)   
+
+);
+
+
+
+-- criando tabela item_pedido:
+
+CREATE TABLE item_pedido (
+
+codigo_produto INT,
+
+  id_pedido INT,
+
+  quantidade INT NOT NULL,
+
+  PRIMARY KEY(codigo_produto, id_pedido),
+
+  FOREIGN KEY(codigo_produto) REFERENCES produto(codigo),
+
+  FOREIGN KEY(id_pedido) REFERENCES pedido(id)
+
+); 
